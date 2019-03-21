@@ -1,17 +1,12 @@
-import React, { Component , createRef} from 'react';
+/* eslint-disable react/prefer-stateless-function */
+import React, { Component } from 'react';
 
-class PlayButton extends Component{
-    constructor(props){
-        super(props)
-    }
-
-  render(){
-    return(
-        <i className ={this.props.isPlaying ? "fas fa-pause":"fas fa-play"} onClick={this.props.handleChangePlaying} style = {{marginLeft:"4%"}}></i>
-      );
+class PlayButton extends Component {
+  render() {
+    return (
+      <i className={this.props.isPlaying ? 'fas fa-pause' : 'fas fa-play'} onClick={this.props.handleChangePlaying} style={{ marginLeft: '4%' }} />
+    );
   }
 }
 
-export default PlayButton
-
-
+export default PlayButton;
