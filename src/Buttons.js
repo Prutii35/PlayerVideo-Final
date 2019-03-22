@@ -1,46 +1,54 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable import/extensions */
-import React, { Component } from 'react';
-import PlayButton from './PlayButton.js';
-import FullScreenIcon from './FullScreenIcon.js';
-import VolumeBar from './VolumeBar.js';
-import VolumeIcon from './VolumeIcon.js';
-import ProgressBar from './ProgressBar.js';
+import React from 'react';
 import Time from './Time.js';
 
-// eslint-disable-next-line react/prefer-stateless-function
-class Buttons extends Component {
-  render() {
-    return (
-      // eslint-disable-next-line react/jsx-filename-extension
-      <div className={this.props.fullscreenCheck ? 'Container-Buttons-FullScreen' : 'Container-Buttons'}>
-        <ProgressBar
-          currentTime={this.props.currentTime}
-          videoDuration={this.props.videoDuration}
-          handleUpdateProgressBar={this.props.handleUpdateProgressBar}
-        />
-        <PlayButton
-          isPlaying={this.props.isPlaying}
-          handleChangePlaying={this.props.handleChangePlaying}
-        />
-        <VolumeIcon
-          volume={this.props.volume}
-          handleMuteSound={this.props.handleMuteSound}
-          mute={this.props.mute}
-        />
-        <VolumeBar
-          handleUpdateSound={this.props.handleUpdateSound}
-        />
-        <Time
-          currentTime={this.props.currentTime}
-          videoDuration={this.props.videoDuration}
-        />
-        <FullScreenIcon
-          fullScreenCheck={this.props.fullscreenCheck}
-          handleChangeFullScreen={this.props.handleChangeFullScreen}
+export default function Buttons(props) {
+  return (
+    <div className={props.fullScreenCheck ? 'Container-Buttons-FullScreen' : 'Container-Buttons'}>
+      <input // ProgressBar
+        type="range"
+        min="0"
+        max={props.videoDuration}
+        defaultValue="0"
+        value={props.currentTime}
+        className="bar"
+        onChange={props.handleUpdateProgressBar}
+      />
+      <i // PlayButton
+        className={props.isPlaying ? 'fas fa-pause' : 'fas fa-play'}
+        onClick={props.handleChangePlaying}
+        style={{ marginLeft: '4%' }}
+      />
+      <i // Volume Icon
+        className={!props.mute ? 'fas fa-volume-up' : 'fas fa-volume-down'}
+        style={{ marginLeft: '1%' }}
+        onClick={props.handleMuteSound}
+      />
+      <div className="ContainerVolume">
+        <input // VolumeBar
+          type="range"
+          min="0"
+          max="100"
+          value={props.mute? 0 : props.volume * 100}
+          className="volumeBar"
+          defaultValue="50"
+          onChange={props.handleUpdateSound}
         />
       </div>
-    );
-  }
+      <Time
+        currentTime={props.currentTime}
+        videoDuration={props.videoDuration}
+      />
+      <i // FullScreen Icon
+        className="fas fa-desktop"
+        style={{
+          position: 'absolute', top: '33%', bottom: '33%', right: '3%',
+        }}
+        onClick={props.handleChangeFullScreen}
+      />
+    </div>
+  );
 }
-
-export default Buttons;

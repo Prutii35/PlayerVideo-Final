@@ -1,9 +1,8 @@
 /* eslint-disable react/sort-comp */
 import React, { Component, createRef } from 'react';
 import './App.css';
+import video from './video.mp4';
 
-import Title from './Title.js';
-import Video from './Video.js';
 import Buttons from './Buttons.js';
 import ClickOnScreen from './ClickOnScreen.js';
 
@@ -43,36 +42,36 @@ class App extends Component {
       mute: false,
       videoCurrentTime: 0,
       videoDuration: 0,
-      fullscreenCheck: false,
+      fullScreenCheck: false,
     };
   }
 
   exitFullscreen = () => {
     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
       this.setState({
-        fullscreenCheck: false,
+        fullScreenCheck: false,
       });
     }
   }
 
   onChangeFullScreen = () => {
-    if (!this.state.fullscreenCheck) {
+    if (!this.state.fullScreenCheck) {
       openFullscreen();
       this.setState({
-        fullscreenCheck: true,
+        fullScreenCheck: true,
       });
     } else {
       closeFullscreen();
       this.setState({
-        fullscreenCheck: false,
+        fullScreenCheck: false,
       });
     }
   }
 
-  ChangePlaying = () => {
-    const video = this.video.current;
-    if (this.state.isPlaying === true) {
-      video.pause();
+  changePlaying = () => {
+    const videoElem = this.video.current;
+    if (this.state.isPlaying) {
+      videoElem.pause();
       // icon on screen
       /*
       const icon = document.getElementsByClassName('imgOnScreen')[1];
@@ -84,7 +83,7 @@ class App extends Component {
       }, 1000);
       // */
     } else {
-      video.play();
+      videoElem.play();
       // icon om screen
       /*
       const icon = document.getElementsByClassName('imgOnScreen')[0];
@@ -101,18 +100,18 @@ class App extends Component {
     }));
   }
 
-  UpdateSound = (event) => {
+  updateSound = (event) => {
     const volume = event.target;
     const videoElem = this.video.current;
     // eslint-disable-next-line eqeqeq
     if (volume.value != 0) {
-      videoElem.setVolume(volume.value / 100);
+      videoElem.volume = (volume.value / 100);
       this.setState({
         volume: volume.value / 100,
         mute: false,
       });
     } else {
-      videoElem.setVolume(0);
+      videoElem.volume = 0;
       this.setState({
         volume: 0,
         mute: true,
@@ -120,48 +119,32 @@ class App extends Component {
     }
   }
 
-  MuteSound = () => {
+  muteSound = () => {
     const videoElem = this.video.current;
     if (this.state.mute) {
-      videoElem.setVolume(0.5);
+      if (!this.state.volume) {
+        videoElem.volume = 0.5;
+        this.setState({
+          volume: 0.5,
+        });
+      }
+      videoElem.muted = false;
       this.setState({
-        volume: 0.5,
         mute: false,
       });
     } else {
-      videoElem.setVolume(0);
+      videoElem.muted = true;
       this.setState({
-        volume: 0,
         mute: true,
       });
     }
   }
-
-  UpdateCurrentTime = (param) => {
-    this.setState({
-      videoCurrentTime: param,
-    });
-  }
-
-  SetVideoDuration = (param) => {
-    this.setState({
-      // eslint-disable-next-line radix
-      videoDuration: parseInt(param),
-    });
-  }
-
-  UpdatePlaying = (param) => {
-    this.setState({
-      isPlaying: param,
-    });
-  }
-
 
   UpdateProgressBar = (event) => {
     const progBar = event.target;
     const videoElem = this.video.current;
 
-    videoElem.setTime(progBar.value);
+    videoElem.currentTime = (progBar.value);
     this.setState({
       videoCurrentTime: progBar.value,
     });
@@ -174,26 +157,50 @@ class App extends Component {
     document.addEventListener('MSFullscreenChange', this.exitFullscreen);
   }
 
+  componentDidMount() {
+    const videoElem = this.video.current;
+
+    videoElem.onloadedmetadata = (event) => {
+      this.setState({
+        // eslint-disable-next-line radix
+        videoDuration: parseInt(videoElem.duration),
+      });
+    };
+
+    videoElem.ontimeupdate = (event) => {
+      this.setState({
+        videoCurrentTime: videoElem.currentTime,
+      });
+    };
+
+    videoElem.onended = (event) => {
+      this.setState({
+        isPlaying: false,
+      });
+    };
+  }
+
   render() {
     return (
       // eslint-disable-next-line react/jsx-filename-extension
-      <div className={this.state.fullscreenCheck ? 'Container-FullScreen' : 'Container'}>
-        <div>
-          <Title title="MAX - Lights Down Low feat. gnash (Official Video)" />
+      <div className={this.state.fullScreenCheck ? 'Container-FullScreen' : 'Container'}>
+        <div className="Container-Titlu">
+          <span className="Text-Titlu">
+            {'MAX - Lights Down Low feat. gnash (Official Video)'}
+          </span>
         </div>
 
         <ClickOnScreen
-          handleChangePlaying={this.ChangePlaying}
+          handleChangePlaying={this.changePlaying}
+          fullScreenCheck={this.state.fullScreenCheck}
         />
 
         <div>
-          <Video
-            ref={this.video}
-            volume={this.state.volume}
-            handleUpdateCurrentTime={this.UpdateCurrentTime}
-            handleUpdatePlaying={this.UpdatePlaying}
-            handleSetVideoDuration={this.SetVideoDuration}
-            />
+          <div className="Container-Video">
+            <video className="vid" ref={this.video}>
+              <source src={video} type="video/mp4" />
+            </video>
+          </div>
         </div>
 
         <Buttons
@@ -202,10 +209,10 @@ class App extends Component {
           volume={this.state.volume}
           currentTime={this.state.videoCurrentTime}
           videoDuration={this.state.videoDuration}
-          fullscreenCheck={this.state.fullscreenCheck}
-          handleChangePlaying={this.ChangePlaying}
-          handleUpdateSound={this.UpdateSound} 
-          handleMuteSound={this.MuteSound}
+          fullScreenCheck={this.state.fullScreenCheck}
+          handleChangePlaying={this.changePlaying}
+          handleUpdateSound={this.updateSound}
+          handleMuteSound={this.muteSound}
           handleUpdateProgressBar={this.UpdateProgressBar}
           handleChangeFullScreen={this.onChangeFullScreen}
         />
