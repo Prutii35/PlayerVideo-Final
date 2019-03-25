@@ -1,4 +1,7 @@
-/* eslint-disable react/sort-comp */
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable import/extensions */
 import React, { Component, createRef } from 'react';
 import './App.css';
 import video from './video.mp4';
@@ -46,8 +49,41 @@ class App extends Component {
     };
   }
 
+  componentWillMount() {
+    document.addEventListener('fullscreenchange', this.exitFullscreen);
+    document.addEventListener('webkitfullscreenchange', this.exitFullscreen);
+    document.addEventListener('mozfullscreenchange', this.exitFullscreen);
+    document.addEventListener('MSFullscreenChange', this.exitFullscreen);
+  }
+
+  componentDidMount() {
+    const videoElem = this.video.current;
+
+    videoElem.onloadedmetadata = (event) => {
+      this.setState({
+        // eslint-disable-next-line radix
+        videoDuration: parseInt(videoElem.duration),
+      });
+    };
+
+    videoElem.ontimeupdate = (event) => {
+      this.setState({
+        videoCurrentTime: videoElem.currentTime,
+      });
+    };
+
+    videoElem.onended = (event) => {
+      this.setState({
+        isPlaying: false,
+      });
+    };
+  }
+
   exitFullscreen = () => {
-    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+    if (!document.fullscreenElement
+     && !document.webkitIsFullScreen
+     && !document.mozFullScreen
+     && !document.msFullscreenElement) {
       this.setState({
         fullScreenCheck: false,
       });
@@ -150,39 +186,8 @@ class App extends Component {
     });
   }
 
-  componentWillMount() {
-    document.addEventListener('fullscreenchange', this.exitFullscreen);
-    document.addEventListener('webkitfullscreenchange', this.exitFullscreen);
-    document.addEventListener('mozfullscreenchange', this.exitFullscreen);
-    document.addEventListener('MSFullscreenChange', this.exitFullscreen);
-  }
-
-  componentDidMount() {
-    const videoElem = this.video.current;
-
-    videoElem.onloadedmetadata = (event) => {
-      this.setState({
-        // eslint-disable-next-line radix
-        videoDuration: parseInt(videoElem.duration),
-      });
-    };
-
-    videoElem.ontimeupdate = (event) => {
-      this.setState({
-        videoCurrentTime: videoElem.currentTime,
-      });
-    };
-
-    videoElem.onended = (event) => {
-      this.setState({
-        isPlaying: false,
-      });
-    };
-  }
-
   render() {
     return (
-      // eslint-disable-next-line react/jsx-filename-extension
       <div className={this.state.fullScreenCheck ? 'Container-FullScreen' : 'Container'}>
         <div className="Container-Titlu">
           <span className="Text-Titlu">

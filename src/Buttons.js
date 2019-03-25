@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -24,7 +26,6 @@ export default function Buttons(props) {
       />
       <i // Volume Icon
         className={!props.mute ? 'fas fa-volume-up' : 'fas fa-volume-down'}
-        style={{ marginLeft: '1%' }}
         onClick={props.handleMuteSound}
       />
       <div className="ContainerVolume">
@@ -32,7 +33,7 @@ export default function Buttons(props) {
           type="range"
           min="0"
           max="100"
-          value={props.mute? 0 : props.volume * 100}
+          value={props.mute ? 0 : props.volume * 100}
           className="volumeBar"
           defaultValue="50"
           onChange={props.handleUpdateSound}

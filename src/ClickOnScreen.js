@@ -6,7 +6,7 @@ import play from './playButton.png';
 
 export default function ClickOnScren(props) {
   return (
-    <div className={props.fullScreenCheck ? "Container-Click-FullScreen":"Container-Click"} onClick={props.handleChangePlaying}>
+    <div className={props.fullScreenCheck ? 'Container-Click-FullScreen' : 'Container-Click'} onClick={props.handleChangePlaying}>
       <div className="MsgOnScreen">
         <img src={play} className="imgOnScreen" alt="PlayOnScreen" />
       </div>
