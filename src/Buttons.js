@@ -45,9 +45,6 @@ export default function Buttons(props) {
       />
       <i // FullScreen Icon
         className="fas fa-desktop"
-        style={{
-          position: 'absolute', top: '33%', bottom: '33%', right: '3%',
-        }}
         onClick={props.handleChangeFullScreen}
       />
     </div>
