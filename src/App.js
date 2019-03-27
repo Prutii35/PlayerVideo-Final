@@ -189,41 +189,36 @@ class App extends Component {
   render() {
     return (
       <div className={this.state.fullScreenCheck ? 'Container-FullScreen' : 'Container'}>
-        <div className="Container-Video">
-
-          <div className="Container-Titlu">
-            <span className="Text-Titlu">
-              {'MAX - Lights Down Low feat. gnash (Official Video)'}
-            </span>
-          </div>
-
-          <ClickOnScreen
-            handleChangePlaying={this.changePlaying}
-            fullScreenCheck={this.state.fullScreenCheck}
-          />
-
-          <video className="vid" ref={this.video}>
-            <source src={video} type="video/mp4" />
-          </video>
-
-          <Buttons
-            isPlaying={this.state.isPlaying}
-            mute={this.state.mute}
-            volume={this.state.volume}
-            currentTime={this.state.videoCurrentTime}
-            videoDuration={this.state.videoDuration}
-            fullScreenCheck={this.state.fullScreenCheck}
-            handleChangePlaying={this.changePlaying}
-            handleUpdateSound={this.updateSound}
-            handleMuteSound={this.muteSound}
-            handleUpdateProgressBar={this.UpdateProgressBar}
-            handleChangeFullScreen={this.onChangeFullScreen}
-          />
-
+        <div className="Container-Titlu">
+          <span className="Text-Titlu">
+            {'MAX - Lights Down Low feat. gnash (Official Video)'}
+          </span>
         </div>
+
+        <ClickOnScreen
+          handleChangePlaying={this.changePlaying}
+          fullScreenCheck={this.state.fullScreenCheck}
+        />
+
+        <video className={this.state.fullScreenCheck ? 'Container-Video-Full' : 'vid'} ref={this.video}>
+          <source src={video} type="video/mp4" />
+        </video>
+
+        <Buttons
+          isPlaying={this.state.isPlaying}
+          mute={this.state.mute}
+          volume={this.state.volume}
+          currentTime={this.state.videoCurrentTime}
+          videoDuration={this.state.videoDuration}
+          fullScreenCheck={this.state.fullScreenCheck}
+          handleChangePlaying={this.changePlaying}
+          handleUpdateSound={this.updateSound}
+          handleMuteSound={this.muteSound}
+          handleUpdateProgressBar={this.UpdateProgressBar}
+          handleChangeFullScreen={this.onChangeFullScreen}
+        />
+
       </div>
-
-
     );
   }
 }
