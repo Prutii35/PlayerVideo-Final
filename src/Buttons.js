@@ -9,7 +9,7 @@ import Time from './Time.js';
 
 export default function Buttons(props) {
   return (
-    <div className={props.fullScreenCheck ? 'Container-Buttons-FullScreen' : 'Container-Buttons'}>
+    <div className="Container-Buttons">
       <input // ProgressBar
         type="range"
         min="0"
