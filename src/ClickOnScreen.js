@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import pause from './pauseButton.png';
 import play from './playButton.png';

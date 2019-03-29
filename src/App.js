@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable import/extensions */
 import React, { Component, createRef } from 'react';
 import './App.css';
 import video from './video.mp4';
@@ -139,7 +135,6 @@ class App extends Component {
   updateSound = (event) => {
     const volume = event.target;
     const videoElem = this.video.current;
-    // eslint-disable-next-line eqeqeq
     if (volume.value != 0) {
       videoElem.volume = (volume.value / 100);
       this.setState({
